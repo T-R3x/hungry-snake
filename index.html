@@ -53,7 +53,13 @@
         LEFT = 0,
         UP = 1,
         RIGHT = 2,
-        DOWN = 3;
+        DOWN = 3,
+
+    // KeyCodes
+        KEY_LEFT = 37,
+        KEY_UP = 38,
+        KEY_RIGHT = 39,
+        KEY_DOWN = 40;
 
     // Global variables
     var canvas,
@@ -87,6 +93,15 @@
 
         grid = new Grid();
         snake = new Snake();
+
+        // add keyup / keydown event listener
+        document.addEventListener('keydown', function (ev) {
+            keyState[ev.keyCode] = true;
+        });
+
+        document.addEventListener('keyup', function (ev) {
+            delete keyState[ev.keyCode];
+        });
 
         init();
         loop();
@@ -155,11 +170,59 @@
     function update() {
         frames++;
 
+        setSnakeDirection();
+
         // each 5th frame
         if (frames % 5 === 0) {
             var snakeHeadPosX = snake.head.x;
             var snakeHeadPosY = snake.head.y;
-            var tail = {x: snakeHeadPosX, y: snakeHeadPosY};
+            var tail = {};
+
+            // sets the new snakes head position by snakes direction
+            switch (snake.direction) {
+                case LEFT:
+                    snakeHeadPosX--;
+                    break;
+
+                case UP:
+                    snakeHeadPosY--;
+                    break;
+
+                case RIGHT:
+                    snakeHeadPosX++;
+                    break;
+
+                case DOWN:
+                    snakeHeadPosY++;
+                    break;
+            }
+
+            // 'collision' detection on the walls and the snake itself
+            if (0 > snakeHeadPosX || snakeHeadPosX > grid.width - 1 ||
+                    0 > snakeHeadPosY || snakeHeadPosY > grid.height - 1 ||
+                    grid.getValue(snakeHeadPosX, snakeHeadPosY) === SNAKE) {
+                return init();
+            }
+
+            if (grid.getValue(snakeHeadPosX, snakeHeadPosY) === FOOD) {
+                // Snake eats the food.
+                // Adds the food element as snake element
+                tail = {x: snakeHeadPosX, y: snakeHeadPosY};
+
+                // add a new food element on grid
+                setFood();
+
+                // increment score by 10
+                score += 10;
+
+            } else {
+                // 'animate' the snake.
+                // remove the tail of the snake and fill it with a empty grid element.
+                tail = snake.remove();
+                grid.setValue(EMPTY, tail.x, tail.y);
+                tail.x = snakeHeadPosX;
+                tail.y = snakeHeadPosY;
+            }
 
             grid.setValue(SNAKE, tail.x, tail.y);
             snake.insert(tail.x, tail.y);
@@ -194,6 +257,27 @@
 
         ctx.fillStyle = '#34495e';
         ctx.fillText('SCORE: ' + score, 10, canvas.height - 10);
+    }
+
+    /**
+     * Sets the snake direction by user input.
+     */
+    function setSnakeDirection() {
+        if (keyState[KEY_LEFT] && snake.direction !== RIGHT) {
+            snake.direction = LEFT;
+        }
+
+        if (keyState[KEY_UP] && snake.direction !== DOWN) {
+            snake.direction = UP;
+        }
+
+        if (keyState[KEY_RIGHT] && snake.direction !== LEFT) {
+            snake.direction = RIGHT;
+        }
+
+        if (keyState[KEY_DOWN] && snake.direction !== UP) {
+            snake.direction = DOWN;
+        }
     }
 
 </script>

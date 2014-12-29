@@ -34,3 +34,12 @@ Snake.prototype.insert = function (x, y) {
     this.tailElements.unshift({x: x, y: y});
     this.head = this.tailElements[0];
 };
+
+/**
+ * Removes and returns the last element of the snake queue.
+ *
+ * @returns {T}
+ */
+Snake.prototype.remove = function () {
+    return this.tailElements.pop();
+};
