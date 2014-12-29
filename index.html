@@ -32,6 +32,41 @@
 </head>
 <body>
 
-<canvas width="800" height="600"></canvas>
+<!-- Include grid class -->
+<script src="js/Grid.js"></script>
+
+<!-- Include snake class -->
+<script src="js/Snake.js.js"></script>
+
+<script>
+
+    // Global constants
+    var COLS = 40, ROWS = 40;
+
+    // Global variables
+    var canvas, ctx;
+
+    /**
+     * Call main function if the DOM is ready.
+     */
+    window.onload = function () {
+        main();
+    };
+
+
+    /**
+     * Main function
+     */
+    function main() {
+        // create a canvas
+        canvas = document.createElement('canvas');
+        canvas.width = COLS * 15;
+        canvas.height = ROWS * 15;
+        ctx = canvas.getContext('2d');
+        ctx.font = "20px Arial";
+
+        document.body.appendChild(canvas);
+    }
+</script>
 </body>
 </html>
