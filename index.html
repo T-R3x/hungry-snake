@@ -91,6 +91,9 @@
         init();
     }
 
+    /**
+     * Init function to initialize the grid, snake and food.
+     */
     function init() {
         frames = 0;
         score = 0;
@@ -104,7 +107,30 @@
         snake.init(UP, snakePosition.x, snakePosition.y);
         grid.setValue(SNAKE, snakePosition.x, snakePosition.y);
 
-        console.debug(snakePosition.x, snakePosition.y);
+        setFood();
+    }
+
+    /**
+     * Sets the food on the grid
+     */
+    function setFood() {
+        var empty = [];
+
+        // create an array with empty grid elements.
+        var x, y;
+        for (x = 0; x < grid.width; x++) {
+            for (y = 0; y < grid.height; y++) {
+                if (grid.getValue(x, y) === EMPTY) {
+                    empty.push({x: x, y: y});
+                }
+            }
+        }
+
+        // gets a random empty element
+        var randPos = empty[Math.floor(Math.random() * empty.length)];
+
+        // set the food on a random empty position
+        grid.setValue(FOOD, randPos.x, randPos.y);
     }
 
 </script>

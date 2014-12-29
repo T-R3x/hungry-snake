@@ -37,3 +37,13 @@ Grid.prototype.init = function (type, width, height) {
 Grid.prototype.setValue = function (value, x, y) {
     this.elements[x][y] = value;
 };
+
+/**
+ * Gets a value from a x, y position.
+ *
+ * @param x - Position
+ * @param y - Position
+ */
+Grid.prototype.getValue = function (x, y) {
+    return this.elements[x][y];
+};
