@@ -36,15 +36,27 @@
 <script src="js/Grid.js"></script>
 
 <!-- Include snake class -->
-<script src="js/Snake.js.js"></script>
+<script src="js/Snake.js"></script>
 
 <script>
 
     // Global constants
-    var COLS = 40, ROWS = 40;
+    var COLS = 40,
+        ROWS = 40,
+
+        // Values of a grid cell
+        EMPTY = 0,
+        SNAKE = 1,
+        FOOD = 2;
 
     // Global variables
-    var canvas, ctx;
+    var canvas,
+        ctx,
+        grid,
+        snake,
+        frames,
+        score,
+        keyState;
 
     /**
      * Call main function if the DOM is ready.
@@ -66,7 +78,21 @@
         ctx.font = "20px Arial";
 
         document.body.appendChild(canvas);
+
+        grid = new Grid();
+
+        init();
     }
+
+    function init() {
+        frames = 0;
+        score = 0;
+        keyState = [];
+
+        // initialize the grid with empty elements (whole width and size)
+        grid.init(EMPTY, COLS, ROWS);
+    }
+
 </script>
 </body>
 </html>
