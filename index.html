@@ -89,6 +89,7 @@
         snake = new Snake();
 
         init();
+        loop();
     }
 
     /**
@@ -108,6 +109,19 @@
         grid.setValue(SNAKE, snakePosition.x, snakePosition.y);
 
         setFood();
+    }
+
+    /**
+     * Loop function (looping on each frame)
+     */
+    function loop() {
+        // update data on each frame
+        update();
+
+        // draw updated data
+        draw();
+
+        window.requestAnimationFrame(loop, canvas);
     }
 
     /**
@@ -131,6 +145,55 @@
 
         // set the food on a random empty position
         grid.setValue(FOOD, randPos.x, randPos.y);
+    }
+
+
+    /**
+     * Updates the data.
+     * @returns {*}
+     */
+    function update() {
+        frames++;
+
+        // each 5th frame
+        if (frames % 5 === 0) {
+            var snakeHeadPosX = snake.head.x;
+            var snakeHeadPosY = snake.head.y;
+            var tail = {x: snakeHeadPosX, y: snakeHeadPosY};
+
+            grid.setValue(SNAKE, tail.x, tail.y);
+            snake.insert(tail.x, tail.y);
+        }
+    }
+
+    /**
+     * Draw food, snake and empty grid element.
+     */
+    function draw() {
+        var width = canvas.width / grid.width;
+        var height = canvas.height / grid.height;
+
+        var x, y;
+        for (x = 0; x < grid.width; x++) {
+            for (y = 0; y < grid.height; y++) {
+                switch (grid.getValue(x, y)) {
+                    case EMPTY:
+                        ctx.fillStyle = '#ecf0f1';
+                        break;
+                    case SNAKE:
+                        ctx.fillStyle = '#2c3e50';
+                        break;
+                    case FOOD:
+                        ctx.fillStyle = '#f1c40f';
+                        break;
+                }
+
+                ctx.fillRect(x * width, y * height, width, height);
+            }
+        }
+
+        ctx.fillStyle = '#34495e';
+        ctx.fillText('SCORE: ' + score, 10, canvas.height - 10);
     }
 
 </script>
