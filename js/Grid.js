@@ -26,3 +26,14 @@ Grid.prototype.init = function (type, width, height) {
         }
     }
 };
+
+/**
+ * Sets a value on a x, y position.
+ *
+ * @param value
+ * @param x - Position
+ * @param y - Position
+ */
+Grid.prototype.setValue = function (value, x, y) {
+    this.elements[x][y] = value;
+};

@@ -44,10 +44,16 @@
     var COLS = 40,
         ROWS = 40,
 
-        // Values of a grid cell
+    // Values of a grid cell
         EMPTY = 0,
         SNAKE = 1,
-        FOOD = 2;
+        FOOD = 2,
+
+    // Directions
+        LEFT = 0,
+        UP = 1,
+        RIGHT = 2,
+        DOWN = 3;
 
     // Global variables
     var canvas,
@@ -80,6 +86,7 @@
         document.body.appendChild(canvas);
 
         grid = new Grid();
+        snake = new Snake();
 
         init();
     }
@@ -91,6 +98,13 @@
 
         // initialize the grid with empty elements (whole width and size)
         grid.init(EMPTY, COLS, ROWS);
+
+        // set a fixed snake position on starting the game
+        var snakePosition = {x: Math.floor(COLS / 2), y: ROWS - 1};
+        snake.init(UP, snakePosition.x, snakePosition.y);
+        grid.setValue(SNAKE, snakePosition.x, snakePosition.y);
+
+        console.debug(snakePosition.x, snakePosition.y);
     }
 
 </script>
